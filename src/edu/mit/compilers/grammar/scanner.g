@@ -63,12 +63,12 @@ ID options { paraphrase = "an identifier"; } :
 // by directly adding Java commands.
 WS_ : (' ' | '\t' | '\r' | '\n' {newline();}) {_ttype = Token.SKIP; };
 SL_COMMENT : '/' '/' (~'\n')* '\n' {_ttype = Token.SKIP; newline (); };
-ML_COMMENT : '/' '*' ((~'*') | ('*' ~'/'))* '*' '/' {_ttype = Token.SKIP; newline (); } ;
+ML_COMMENT : '/' '*' ( options { greedy = false; } : .)* '*' '/' {_ttype = Token.SKIP; } ;
 
 CHARLITERAL : '\'' CHAR '\'';
 STRINGLITERAL : '"' (CHAR)* '"';
 INTLITERAL : (DIGIT)+;
-HEXLITERAL : '0' 'x' INTLITERAL;
+HEXLITERAL : '0' 'x' ('0'..'9' | 'a'..'f' | 'A'..'F')+;
 
 protected ESC :  '\\' ('n'|'t'|'"'|'\''|'\\');
 protected ALPHA : ('a'..'z' | 'A'..'Z' | '_');
@@ -77,6 +77,6 @@ protected ALPHANUM : ALPHA | DIGIT;
 protected CHAREXCEPTESC : ' '|'!'|'#'|'$'|'%'|'&'|'('|')'|'*'|'+'|','|'-'|'.'|'/'|
     '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'|':'|';'|'<'|'='|'>'|'?'|'@'|
     'A'..'Z'|'['|']'|'^'|'_'|'`'|
-    'a'..'m' | 'o'..'s' | 'u'..'z'|'{'|'|'|'}'|'~';
+    'a'..'z'|'{'|'|'|'}'|'~';
 protected CHAR : ESC | CHAREXCEPTESC;
     

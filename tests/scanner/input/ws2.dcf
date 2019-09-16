@@ -8,10 +8,14 @@ aaa
 block comments are also valid which means this should be ignored
 */
 
+/**
+    Extra stars shouldn't matter
+ **/
+
 bbb
  c /* Note that it could be inline as well*/ d
 
-/*Nested /*comments*/ should
+/*Nested //comments should
 be fine too.
 
 */

@@ -40,6 +40,7 @@ class Main {
         scanner.setTrace(CLI.debug);
         Token token;
         boolean done = false;
+        boolean errorOccurred = false;
         while (!done) {
           try {
             for (token = scanner.nextToken();
@@ -64,6 +65,9 @@ class Main {
                case DecafScannerTokenTypes.INTLITERAL:
                    type = " INTLITERAL";
                    break;
+               case DecafScannerTokenTypes.HEXLITERAL:
+                   type = " INTLITERAL";
+                   break;
                case DecafScannerTokenTypes.STRINGLITERAL:
                    type = " STRINGLITERAL";
                    break;
@@ -75,6 +79,10 @@ class Main {
             // print the error:
             System.err.println(CLI.infile + " " + e);
             scanner.consume();
+            errorOccurred = true;
+          }
+          if (errorOccurred) {
+              System.exit(1);
           }
         }
       } else if (CLI.target == Action.PARSE ||
