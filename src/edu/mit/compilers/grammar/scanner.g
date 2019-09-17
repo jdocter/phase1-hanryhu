@@ -12,7 +12,25 @@ options
 class DecafScanner extends Lexer;
 options
 {
-  k = 5; // Need some lookahead for SINGLECHAROP vs DOUBLECHAROP, SL_COMMENT vs. ML_COMMENT, ML_COMMENT, BOOLEANLITERAL vs. ID
+  k = 6; // Need some lookahead for SINGLECHAROP vs DOUBLECHAROP, SL_COMMENT vs. ML_COMMENT, ML_COMMENT, BOOLEANLITERAL vs. ID
+}
+
+tokens // Use enums instead of strings for typo protection.
+{
+	BOOL="bool";
+	BREAK="break";
+	IMPORT="import";
+	CONTINUE="continue";
+	ELSE="else";
+	FOR="for";
+	WHILE="while";
+	IF="if";
+	INT="int";
+	RETURN="return";
+	LEN="len";
+	VOID="void";
+	TRUE="true";
+	FALSE="false";
 }
 
 // Selectively turns on debug tracing mode.
@@ -47,8 +65,15 @@ RPAREN options { paraphrase = ")"; } : ")";
 SEMICOLON options { paraphrase = ";"; } : ";";
 COMMA options { paraphrase = ","; } : ",";
 
-SINGLECHAROP options { paraphrase = "a single-character operation"; } : ('+'|'-'|'*'|'/'|'!'|'%'|'<'|'>'|'=');
-DOUBLECHAROP options { paraphrase = "a two-character operation"; } : (('+' '=')|('-' '=')|('+' '+')|('-' '-')|('<' '=')|('>' '=')|('=' '=')|('!' '=')|('&' '&')|('|' '|'));
+ARITHOPEXCEPTMINUS : ('+'|'*'|'/'|'%');
+NOT : '!';
+MINUS : '-';
+EQUALS : '=';
+CONDOP : ('&' '&')|('|' '|');
+RELOP : ('<' '=')|('>' '=')|'<'|'>';
+COMPOUNDASSIGNOP : ('+' '=')|('-' '=');
+EQOP : ('=' '=')|('!' '=');
+INCREMENT : ('+' '+')|('-' '-');
 
 ID options { paraphrase = "an identifier"; } : 
   ALPHA (ALPHANUM)*;

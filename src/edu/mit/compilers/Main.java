@@ -8,26 +8,11 @@ import edu.mit.compilers.tools.CLI.Action;
 import java.util.Set;
 
 class Main {
-    
-    private static Set<String> KEYWORDS = Set.of(
-            "bool",
-            "break",
-            "import",
-            "continue",
-            "else",
-            "for",
-            "while",
-            "if",
-            "int",
-            "return",
-            "len",
-            "void"
-            );
     private static Set<String> BOOLEAN_LITERALS = Set.of(
             "true",
             "false"
             );
-    
+
   public static void main(String[] args) {
     try {
       CLI.parse(args, new String[0]);
@@ -51,21 +36,16 @@ class Main {
               String text = token.getText();
               switch (token.getType()) {
                case DecafScannerTokenTypes.ID:
-                   // Hard to differentiate in scanner grammar, do here.
-                   if (BOOLEAN_LITERALS.contains(text)) {
-                       type = " BOOLEANLITERAL";
-                   } else if (KEYWORDS.contains(text)) {
-                       type = "";
-                   } else {
-                       type = " IDENTIFIER";
-                   }
+                   type = " IDENTIFIER";
+                   break;
+               case DecafScannerTokenTypes.TRUE:
+               case DecafScannerTokenTypes.FALSE:
+                   type = " BOOLEANLITERAL";
                    break;
                case DecafScannerTokenTypes.CHARLITERAL:
                    type = " CHARLITERAL";
                    break;
                case DecafScannerTokenTypes.INTLITERAL:
-                   type = " INTLITERAL";
-                   break;
                case DecafScannerTokenTypes.HEXLITERAL:
                    type = " INTLITERAL";
                    break;
