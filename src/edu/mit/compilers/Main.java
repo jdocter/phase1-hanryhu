@@ -39,13 +39,14 @@ class Main {
             new DecafScanner(new DataInputStream(inputStream));
         scanner.setTrace(CLI.debug);
         Token token;
-        boolean done = false;
         boolean errorOccurred = false;
-        while (!done) {
+        while (true) {
+          // Terminates when next token is EOF.
           try {
-            for (token = scanner.nextToken();
-                 token.getType() != DecafParserTokenTypes.EOF;
-                 token = scanner.nextToken()) {
+              token = scanner.nextToken();
+              if (token.getType() == DecafParserTokenTypes.EOF) {
+                  break;
+              }
               String type = "";
               String text = token.getText();
               switch (token.getType()) {
@@ -73,17 +74,17 @@ class Main {
                    break;
               }
               outputStream.println(token.getLine() + type + " " + text);
-            }
-            done = true;
-          } catch(Exception e) {
-            // print the error:
+              // Catch syntax errors only.
+          } catch (antlr.TokenStreamRecognitionException e) {
+              // Can look up e in hash table of known errors here.
             System.err.println(CLI.infile + " " + e);
             scanner.consume();
+            scanner.newline(); // Throw away this line.
             errorOccurred = true;
           }
-          if (errorOccurred) {
-              System.exit(1);
-          }
+        }
+        if (errorOccurred) {
+            System.exit(1);
         }
       } else if (CLI.target == Action.PARSE ||
                  CLI.target == Action.DEFAULT) {
@@ -97,7 +98,7 @@ class Main {
         }
       }
     } catch(Exception e) {
-      // print the error:
+      // Potentially not a syntax error.
       System.err.println(CLI.infile+" "+e);
     }
   }

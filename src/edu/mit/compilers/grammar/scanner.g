@@ -15,11 +15,6 @@ options
   k = 5; // Need some lookahead for SINGLECHAROP vs DOUBLECHAROP, SL_COMMENT vs. ML_COMMENT, ML_COMMENT, BOOLEANLITERAL vs. ID
 }
 
-tokens 
-{
-  "class";
-}
-
 // Selectively turns on debug tracing mode.
 // You can insert arbitrary Java code into your parser/lexer this way.
 {
