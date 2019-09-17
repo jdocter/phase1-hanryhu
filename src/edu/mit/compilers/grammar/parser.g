@@ -108,7 +108,7 @@ program: (import_decl)* (field_decl)* (method_decl)* EOF;
 						// =>
 						// expr : len ( id ) R
 						// R : (bin_op expr R)?
-						expr : (next_expr |
+						expr : (next_expr | // Split off next_expr "factoring on the right"
 						       // Semantics of the parser is that multiple minuses/nots without any
 						       // parens means just apply all of them to the next_expr.
 						       ((MINUS)+ next_expr) |
