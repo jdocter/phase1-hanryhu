@@ -8,11 +8,6 @@ import edu.mit.compilers.tools.CLI.Action;
 import java.util.Set;
 
 class Main {
-    private static Set<String> BOOLEAN_LITERALS = Set.of(
-            "true",
-            "false"
-            );
-
   public static void main(String[] args) {
     try {
       CLI.parse(args, new String[0]);
