@@ -45,7 +45,7 @@ class Main {
                case DecafScannerTokenTypes.CHARLITERAL:
                    type = " CHARLITERAL";
                    break;
-               case DecafScannerTokenTypes.INTLITERAL:
+               case DecafScannerTokenTypes.DECLITERAL:
                case DecafScannerTokenTypes.HEXLITERAL:
                    type = " INTLITERAL";
                    break;

@@ -87,7 +87,7 @@ ML_COMMENT : '/' '*' ( options { greedy = false; } : .)* '*' '/' {_ttype = Token
 
 CHARLITERAL : '\'' CHAR '\'';
 STRINGLITERAL : '"' (CHAR)* '"';
-INTLITERAL : (DIGIT)+;
+DECLITERAL : (DIGIT)+;
 HEXLITERAL : '0' 'x' ('0'..'9' | 'a'..'f' | 'A'..'F')+;
 
 protected ESC :  '\\' ('n'|'t'|'"'|'\''|'\\');

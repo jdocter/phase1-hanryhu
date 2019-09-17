@@ -72,7 +72,9 @@ program: (import_decl)* (field_decl)* (method_decl)* EOF;
 
             type : INT | BOOL ;
 
-        field : ID ( LSQUARE INTLITERAL RSQUARE ) ? ;
+        field : ID ( LSQUARE int_literal RSQUARE ) ? ;
+        
+            int_literal : DECLITERAL | HEXLITERAL ;
 
     method_decl : method_type method_name LPAREN (param (COMMA param)*)? RPAREN block ;  
 
@@ -97,24 +99,30 @@ program: (import_decl)* (field_decl)* (method_decl)* EOF;
 		
 		            location : ID (LSQUARE expr RSQUARE)? ;
 		
-		            assign_expr : (ASSIGNOP expr) | INCREMENT;
+		            assign_expr : (assign_op expr) | INCREMENT;
+		            
+		                assign_op : EQUALS | COMPOUNDASSIGNOP ;
 		
 						// expr : expr bin_op expr
 						// expr : len ( id )
+						// =>
 						// expr : len ( id ) R
 						// R : (bin_op expr R)?
-						// R : (bin_op expr)?
-						expr : (location |
-						       method_call |
-						       literal |
-						       LEN LPAREN ID RPAREN |
-						       MINUS expr |
-						       BANG expr |
-						       LPAREN expr RPAREN  
+						expr : (next_expr |
+						       // Semantics of the parser is that multiple minuses/nots without any
+						       // parens means just apply all of them to the next_expr.
+						       ((MINUS)+ next_expr) |
+						       ((NOT)+ next_expr)
 						       )
 						       bin_op_next_expr ;
+						    
+						    next_expr : location |
+						                method_call |
+						                literal |
+						                (LEN LPAREN ID RPAREN) |
+						                (LPAREN expr RPAREN);
 		
-		                    bin_op_next_expr : (bin_op expr bin_op_next_expr)? ;
+		                    bin_op_next_expr : (bin_op expr)? ;
 		
 		                        bin_op : arith_op | rel_op | eq_op | cond_op;
 		
@@ -131,7 +139,9 @@ program: (import_decl)* (field_decl)* (method_decl)* EOF;
 					
 								import_arg : expr | STRINGLITERAL;
 								        
-					        literal : INTLITERAL | HEXLITERAL | BOOLEANLITERAL | CHARLITERAL;
+					        literal : int_literal | boolean_literal | CHARLITERAL;
+					        
+					            boolean_literal : TRUE | FALSE;
 					        
 		        if_statement : IF LPAREN expr RPAREN
 		                            block
